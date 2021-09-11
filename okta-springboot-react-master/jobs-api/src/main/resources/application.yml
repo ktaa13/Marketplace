@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: jobs-api
+  data:
+    elasticsearch:
+      cluster-name: docker-es-cluster
+      cluster-nodes: ${ELASTICSEARCH_HOST:localhost}:${ELASTICSEARCH_PORT:9300}
+  elasticsearch:
+    rest:
+      uris: http://${ELASTICSEARCH_HOST:localhost}:${ELASTICSEARCH_REST_PORT:9200}
+
+#okta:
+#  oauth2:
+#    issuer: https://${OKTA_DOMAIN}/oauth2/default
+#    clientId: ${OKTA_CLIENT_ID}
+#    rolesClaim: groups
+    
+keycloak:
+    auth-server-url: http://${KEYCLOAK_HOST:localhost}:${KEYCLOAK_PORT:8080}/auth
+    realm: company-services
+    resource: movies-app
+    ssl-required: external
+    principal-attribute: preferred_username
+    use-resource-role-mappings: false
+
+management:
+  endpoints:
+    web:
+      exposure.include: beans, env, health, info, metrics, mappings
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC
+    disable-swagger-default-url: true
+
+app:
+  cors:
+    allowed-origins: "*"
+  number-of-fake-jobs: 100
+
+logging:
+  level:
+    org.springframework.data.elasticsearch.core: DEBUG
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    
+server:
+  port : 9080
